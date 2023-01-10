@@ -67,10 +67,16 @@ const getSpaceById = async (req, res) => {
 //selecting spaces according to location 
 const getSpaceByLocation = async (req, res) => {
 	try {
-		console.log(req.location)
-		const space = spaces.filter(space => space.state.includes(req.location)||space.city.includes(req.location));
-		//const space = await pool.query(`SELECT * FROM Spaces WHERE state=$1;`, [req.state]);
-		return res.json(space);
+		const {searchKey} = req.body;
+
+		const space = spaces.filter(space => space.city.toLowerCase().includes(searchKey)||(space.address.toLowerCase()).includes(searchKey));
+		//const space = await pool.query(`SELECT * FROM Spaces WHERE state=$1 OR city=$1;`, [req.state]);
+		console.log(space,space.length)
+		if(space.length.toString()==='0') {
+			 console.log("inside if "); 
+		 return res.status(204).send("no space found! ");
+		}
+		else return res.status(200).json(space);
 	} catch (error) {
 		res.status(500).send(error.message);
 	}
