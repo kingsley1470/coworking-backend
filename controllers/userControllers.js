@@ -1,24 +1,23 @@
 //const users=require('../UserData.json')
 const bcrypt = require('bcrypt');
+const { json } = require('express');
 const jwt = require('jsonwebtoken');
 const pool = require('../DB/dbConnection.js');
 
 
-
-
 const getAllUsers = async (req, res) => {
 	try {
-		console.log("pool connected");
+		console.log("pool connected inside all users");
 		//const { rows } = await pool.query('SELECT * FROM Users;');
 		pool
 			.connect()
 			.then(() => {
 				pool.query('SELECT * FROM Users;')
-					.then(response => console.log(response.rows))
-					.catch(err => console.log("error inside pool", err))
+					.then(response =>res.status(200).send(response.rows))
+					.catch(err => console.log(err))
 			})
 	} catch (error) {
-		console.log("ERRRRRR  -- ", error.message);
+		console.log("ERR  -- ", error.message);
 	}
 };
 //console.log("all users ", getAllUsers());
@@ -26,9 +25,9 @@ const getAllUsers = async (req, res) => {
 
 const registerUser = async (req, res) => {
 	try {
-		console.log("inside registration ");
 		console.log(req.body)
 		const { firstName, lastName, email, password, phone, address, city, country, zip } = req.body;
+	
 		if (!firstName || !lastName || !email || !password)
 			return res.status(400).send('Please provide all necessery fields');
 
@@ -45,7 +44,7 @@ const registerUser = async (req, res) => {
 				firstName, lastName, email, password, phonenumber, address, city, country, zip)
 					VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9);`, [firstName, lastName, email, hash, phone, address, city, country, zip])
 					.then(response => {
-						pool.query(`SELECT userid  FROM Users WHERE email=$1;`, [email])
+						pool.query(`SELECT userid FROM Users WHERE email=$1;`, [email])
 							.then(response => {
 								const token = jwt.sign(Object.values(response.rows)[0].userid, process.env.JWT_SECRET);
 	                            return res.status(201).json(token);
@@ -65,21 +64,31 @@ const registerUser = async (req, res) => {
 const loginUser = async (req, res) => {
 	try {
 		const { email, password } = req.body
+		console.log(req.body)
        
 		if (!email || !password)
 			return res.status(400).send('Please provide all fields');
 
 		const checkUser = await pool.query(`SELECT * FROM Users WHERE email=$1;`, [email]);
-          console.log(" user password",Object.values(checkUser.rows)[0].password);
-		if (!checkUser) return res.status(400).send('User does not exist');
-		//  console.log(checkUser);
+         
+		if (checkUser.rowCount ===0) return res.status(400).send('User does not exist');
+	  
 		const pwdMatch = await bcrypt.compare(password, Object.values(checkUser.rows)[0].password);
-		
+
 		if (!pwdMatch) return res.status(400).send('Incorrect password');
 
 		const token = jwt.sign({ id: Object.values(checkUser.rows)[0].userid }, process.env.JWT_SECRET);
-         // return res.status(200).send(token)
-		return res.json(token);
+	
+		//res.write(JSON.stringify(checkUser.rows));
+		//res.write((checkUser.rows).toString());
+		const jsonRes={
+			"userId":checkUser.rows[0].userid ,
+			"token":token
+		}
+		 res.status(200).send(JSON.stringify(jsonRes));
+		// res.end();
+		 return ;
+
 	} catch (error) {
 		res.status(500).send(error.message);
 	}
@@ -87,7 +96,8 @@ const loginUser = async (req, res) => {
 
 const getOneUser = async (req, res) => {
 	try {
-		const user = await pool.query(`SELECT * FROM Users WHERE email=$1;`, [req.email]);
+		const {userId} =req.userId;
+		const user = await pool.query(`SELECT * FROM Users WHERE email=$1;`, [userId]);
 		return res.json(user);
 	} catch (error) {
 		res.status(500).send(error.message);
@@ -96,4 +106,4 @@ const getOneUser = async (req, res) => {
 
 
 
-module.exports = { registerUser, loginUser, getOneUser };
+module.exports = { registerUser, loginUser, getOneUser,getAllUsers };

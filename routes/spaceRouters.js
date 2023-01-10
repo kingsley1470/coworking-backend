@@ -12,6 +12,6 @@ const {
 
 userRoute.route('/').get(getAllSpaces).post(createSpace);
 userRoute.route('/single-space').get(getSpaceById);
-userRoute.route('/spaces-by-location').get(getSpaceByLocation);
+userRoute.route('/location').post(getSpaceByLocation);
 
 module.exports = userRoute;
