@@ -20,7 +20,7 @@ const corsOrigin ={
   credentials: true,
   optionSuccessStatus:200
 }
-app.use(cors(corsOrigin));
+app.use(cors());
 
 
 //app.use(cors());
