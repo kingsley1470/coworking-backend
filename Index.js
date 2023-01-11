@@ -15,35 +15,21 @@ const bookingRoute = require('./routes/bookingRouters')
 app.use(express.json());
 
 
-const corsOrigin ={
-  origin:'*', //or whatever port your frontend is using
+// const corsOrigin ={
+//   origin:'*', //or whatever port your frontend is using
+//   credentials: true,
+//   optionSuccessStatus:200,
+// }
+
+const corsConfig = {
+  origin: ["http://localhost:3000"],
   credentials: true,
-  optionSuccessStatus:200,
-}
+  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ['Content-Type']
+};
 
-app.use(function (req, res, next) {
-    res.set({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
-    });
+app.use(cors(corsConfig));
 
-
-  // res.header("Access-Control-Allow-Origin", "*");
-  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, authorization");
-  // res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
-  next();
-});
-
-app.use(cors(corsOrigin));
-
-//app.use(function(req,res){
-  //  res.set({
-    //     'Access-Control-Allow-Origin': '*',
-    //     'Access-Control-Allow-Headers': '*',
-    //     'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
-    // });
-//})
 //app.use(cors());
 //app.use(cors({origin:"*", credentials: true, optionsSuccessStatus: 200}))
 
