@@ -14,15 +14,15 @@ const bookingRoute = require('./routes/bookingRouters')
 
 app.use(express.json());
 //app.use(cors());
-app.use(cors({origin:"*",  credentials:true, optionsSuccessStatus: 200}))
+app.use(cors({origin:"*",  optionsSuccessStatus: 200}))
 
 
 app.get('/', (req,res) =>{
-  res.set({
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': '*',
-    'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
-});
+//   res.set({
+//     'Access-Control-Allow-Origin': '*',
+//     'Access-Control-Allow-Headers': '*',
+//     'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
+// });
     res.send("hello World !");
 });
 
