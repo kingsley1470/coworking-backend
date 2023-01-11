@@ -28,19 +28,20 @@ app.use(express.json());
 //   allowedHeaders: ['Content-Type']
 // };
 
-app.use(cors());
+// app.use(cors());
 
-app.use(function(req,res,next){
-  res.set({
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': '*',
-        'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
-    });
-     res.setHeader('Access-Control-Allow-Origin', '*');
-})
+// app.use(function(req,res,next){
+//   res.set({
+//         'Access-Control-Allow-Origin': '*',
+//         'Access-Control-Allow-Headers': '*',
+//         'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
+//     });
+//      res.setHeader('Access-Control-Allow-Origin', '*');
+// })
 
-//app.use(cors());
-//app.use(cors({origin:"*", credentials: true, optionsSuccessStatus: 200}))
+
+
+app.use(cors({origin:"*", credentials: true, optionsSuccessStatus: 200}))
 
 
 app.get('/', (req,res) =>{
