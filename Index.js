@@ -18,6 +18,11 @@ app.use(cors({origin:"*", optionsSuccessStatus: 200}))
 
 
 app.get('/', (req,res) =>{
+  res.set({
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': '*',
+    'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT,OPTIONS'
+});
     res.send("hello World !");
 });
 
