@@ -18,6 +18,7 @@ app.use(cors());
 
 
 app.get('/', (req,res) =>{
+  res.setHeader('Access-Control-Allow-Origin', '*');
 //   res.set({
 //     'Access-Control-Allow-Origin': '*',
 //     'Access-Control-Allow-Headers': '*',
