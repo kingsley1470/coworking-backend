@@ -21,7 +21,7 @@ app.get('/', (req,res) =>{
   res.set({
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': '*',
-    'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT,OPTIONS'
+    'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
 });
     res.send("hello World !");
 });
