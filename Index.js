@@ -13,12 +13,22 @@ const bookingRoute = require('./routes/bookingRouters')
 
 
 app.use(express.json());
-app.use(cors());
+
+
+const corsOrigin ={
+  origin:'http://localhost:3000/', //or whatever port your frontend is using
+  credentials: true,
+  optionSuccessStatus:200
+}
+app.use(cors(corsOrigin));
+
+
+//app.use(cors());
 //app.use(cors({origin:"*", credentials: true, optionsSuccessStatus: 200}))
 
 
 app.get('/', (req,res) =>{
-  res.setHeader('Access-Control-Allow-Origin', '*');
+ // res.setHeader('Access-Control-Allow-Origin', '*');
 //   res.set({
 //     'Access-Control-Allow-Origin': '*',
 //     'Access-Control-Allow-Headers': '*',
