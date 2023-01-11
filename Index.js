@@ -13,7 +13,8 @@ const bookingRoute = require('./routes/bookingRouters')
 
 
 app.use(express.json());
-app.use(cors());
+//app.use(cors());
+app.use(cors({origin:"*", optionsSuccessStatus: 200}))
 
 
 app.get('/', (req,res) =>{
