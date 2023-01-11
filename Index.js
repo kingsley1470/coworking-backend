@@ -21,26 +21,29 @@ app.use(express.json());
 //   optionSuccessStatus:200,
 // }
 
-const corsConfig = {
-  origin: ["http://localhost:3000"],
-  credentials: true,
-  methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ['Content-Type']
-};
+// const corsConfig = {
+//   origin: ["http://localhost:3000"],
+//   credentials: true,
+//   methods: "GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE",
+//   allowedHeaders: ['Content-Type']
+// };
 
-app.use(cors(corsConfig));
+app.use(cors());
+
+app.use(function(req,res,next){
+  res.set({
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': '*',
+        'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
+    });
+     res.setHeader('Access-Control-Allow-Origin', '*');
+})
 
 //app.use(cors());
 //app.use(cors({origin:"*", credentials: true, optionsSuccessStatus: 200}))
 
 
 app.get('/', (req,res) =>{
- // res.setHeader('Access-Control-Allow-Origin', '*');
-//   res.set({
-//     'Access-Control-Allow-Origin': '*',
-//     'Access-Control-Allow-Headers': '*',
-//     'Access-Control-Allow-Methods': 'POST,GET,DELETE,PUT'
-// });
     res.send("hello World !");
 });
 
