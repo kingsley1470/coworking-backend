@@ -51,5 +51,8 @@ const getAllBooking = async (req, res) => {
 	//return res.send(Booking);
 };
 
+const getAllBookingById = async(req, res ) =>{
+
+}
 
 module.exports = { newBooking,getAllBooking};

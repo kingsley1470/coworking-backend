@@ -26,4 +26,5 @@ app.use('/user', userRoute);
 app.use('/spaces', spaceRoute);
 app.use('/booking', bookingRoute);
 
+
 app.listen(port, () => console.log(`Server running on port ${port}`));

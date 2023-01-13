@@ -436,7 +436,7 @@
     "counrty":"Germany",
     "reviews":"good",
     "available":true,
-    "openHours": "08:00 am - 23:00 pm",
+    "openHours": "08:00 am - 23:00 pm ",
     "openDays": "Monday - Thursday"
     },    
     {
