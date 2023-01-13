@@ -48,7 +48,7 @@ const registerUser = async (req, res) => {
 						pool.query(`SELECT userid FROM Users WHERE email=$1;`, [email])
 							.then(response => {
 								const token = jwt.sign(Object.values(response.rows)[0].userid, process.env.JWT_SECRET);
-	                            return res.status(201).json(token);
+	                            return res.status(201).json({userid:(response.rows)[0].userid,token:token});
 							}); //obj[Object.keys(obj)[0]]; 
 					})
 					.catch((err) => {
