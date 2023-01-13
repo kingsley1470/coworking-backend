@@ -96,7 +96,7 @@ const loginUser = async (req, res) => {
 
 const getOneUser = async (req, res) => {
 	try {
-		const {userId} =req.userId;
+		const userId =req.userId;
 		//const user = await pool.query(`SELECT * FROM Users WHERE email=$1;`, [userId]);
 		const user = await pool.query(`SELECT * FROM Users WHERE userid=$1;`, [userId]);
 		return res.json(user);
