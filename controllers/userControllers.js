@@ -27,6 +27,7 @@ const registerUser = async (req, res) => {
 	try {
 		console.log(req.body)
 		const { firstName, lastName, email, password, phone, address, city, country, zip , profilePicUrl } = req.body;
+
 	
 		if (!firstName || !lastName || !email || !password)
 			return res.status(400).send('Please provide all necessery fields');
@@ -42,14 +43,13 @@ const registerUser = async (req, res) => {
 			.then(() => {
 				pool.query(`INSERT INTO Users(
 				firstName, lastName, email, password, phonenumber, address, city, country, zip, profilepicurl)
-					VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9);`, [firstName, lastName, email, hash, phone, address, city, country, zip,profilePicUrl])
+					VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10);`, [firstName, lastName, email, hash, phone, address, city, country, zip ,profilePicUrl])
 					.then(response => {
 						pool.query(`SELECT userid FROM Users WHERE email=$1;`, [email])
 							.then(response => {
 								const token = jwt.sign(Object.values(response.rows)[0].userid, process.env.JWT_SECRET);
 	                            return res.status(201).json(token);
 							}); //obj[Object.keys(obj)[0]]; 
-						
 					})
 					.catch((err) => {
 						console.log(err)
