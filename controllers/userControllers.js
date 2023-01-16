@@ -96,10 +96,12 @@ const loginUser = async (req, res) => {
 
 const getOneUser = async (req, res) => {
 	try {
-		const userId =req.userId;
+		console.log("user id from body ",req.body.userId)
+		const userId =req.body.userId;
 		//const user = await pool.query(`SELECT * FROM Users WHERE email=$1;`, [userId]);
 		const user = await pool.query(`SELECT * FROM Users WHERE userid=$1;`, [userId]);
-		return res.json(user);
+		console.log(user.rows[0])
+		return res.json(user.rows[0]);
 	} catch (error) {
 		res.status(500).send(error.message);
 	}

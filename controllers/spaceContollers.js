@@ -1,5 +1,6 @@
 //const pool = require('../DB/dbConnection.js');
 const spaces=require('../SpaceData.json');
+const pool = require('../DB/dbConnection.js');
 
 
 
@@ -24,23 +25,24 @@ const getAllSpaces = async (req, res) => {
 //adding new space
 const createSpace = async (req, res) => {
 	try {
-		console.log("inside createSpace ")
-		const { title, area, ownerEmail, ownerPhone, costperDay, maxPeople, description, address,city,state, zip,country,stars } = req.body;
-		if (!title || !area || !costperDay || !address ||!state ||!zip)
+	
+		const { title, area, ownerName,  costperDay, maxPeople, description, address,city,state, zip,country,spacePicUrl,ownerEmail } = req.body;
+		if (!title || !area || !costperDay || !address ||!state ||!zip || !ownerEmail)
 			return res.status(400).send('Please provide all necessery fields');
 
 		const checkSpace = await pool.query(`SELECT * FROM Spaces WHERE OwnerEmail=$1;`, [ownerEmail]);
 	
-	if (checkSpace.rowCount >= 1) return res.status(400).send('space already exist');
+	//if (checkSpace.rowCount >= 1) return res.status(400).send('one user can add only one space');
 
 		pool
 			.connect()
 			.then(() => {
 				pool.query(`INSERT INTO Spaces(
-					title, area, ownerEmail, ownerPhone, costperDay, maxPeople, description, address,city,state, zip,country,stars,availability)
-					VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9);`, [title, area, ownerEmail, ownerPhone, costperDay, maxPeople, description, address,city,state, zip,country,stars,"true"])
+					title,area,ownerName, ownerEmail, costperDay, maxPeople, description, address,city,state, zip,country,is_available,imgUrl)
+					VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14);`, [title, area,ownerName, ownerEmail, costperDay, maxPeople, description, address,city,state, zip,country,"true",spacePicUrl])
 					.then(response => {
-					    return res.status(201).send(Success);
+						console.log(response);
+					    return res.status(201).send('Success');
 					})
 					.catch((err) => {
 						console.log(err)
@@ -73,7 +75,6 @@ const getSpaceByLocation = async (req, res) => {
 		//const space = await pool.query(`SELECT * FROM Spaces WHERE state=$1 OR city=$1;`, [req.state]);
 		console.log(space,space.length)
 		if(space.length.toString()==='0') {
-			 console.log("inside if "); 
 		 return res.status(204).send("no space found! ");
 		}
 		else return res.status(200).json(space);

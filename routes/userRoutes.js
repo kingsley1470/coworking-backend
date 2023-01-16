@@ -14,5 +14,6 @@ userRoute.route('/').get(getAllUsers);
 userRoute.route('/login').post(loginUser);
 userRoute.route('/register').post(registerUser);
 userRoute.route('/auth').post(verifyToken, getOneUser);
+userRoute.route('/get-user').post(getOneUser);
 
 module.exports = userRoute;
