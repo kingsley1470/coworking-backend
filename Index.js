@@ -9,7 +9,8 @@ const cors = require('cors');
 
 const userRoute = require('./routes/userRoutes');
 const spaceRoute = require('./routes/spaceRouters');
-const bookingRoute = require('./routes/bookingRouters')
+const bookingRoute = require('./routes/bookingRouters');
+const sendMailRoute = require('./routes/sendMailRouter');
 
 
 app.use(express.json());
@@ -25,6 +26,8 @@ app.get('/', (req,res) =>{
 app.use('/user', userRoute);
 app.use('/spaces', spaceRoute);
 app.use('/booking', bookingRoute);
+app.use('/send-email', sendMailRoute);
+
 
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

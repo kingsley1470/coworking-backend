@@ -1,5 +1,5 @@
 const express = require('express');
-const userRoute = express.Router();
+const spaceRoute = express.Router();
 
 const {
     createSpace,
@@ -10,8 +10,8 @@ const {
 
 
 
-userRoute.route('/').get(getAllSpaces).post(createSpace);
-userRoute.route('/single-space').get(getSpaceById);
-userRoute.route('/location').post(getSpaceByLocation);
+  spaceRoute.route('/').get(getAllSpaces).post(createSpace);
+  spaceRoute.route('/single-space').get(getSpaceById);
+  spaceRoute.route('/location').post(getSpaceByLocation);
 
-module.exports = userRoute;
+module.exports = spaceRoute;
