@@ -23,28 +23,45 @@ const getAllSpaces = async (req, res) => {
 
 //adding new space
 const createSpace = async (req, res) => {
-	try {
-		console.log("inside createSpace ")
-		const { title, area, ownerEmail, ownerPhone, costperDay, maxPeople, description, address, city, state, zip, country, stars } = req.body;
-		if (!title || !area || !costperDay || !address || !state || !zip)
+	// try {
+		console.log("inside createSpace ", req.body)
+		const { title, area, ownerEmail, ownerName, costperDay, maxPeople, description, address, city, state, zip, country, spacePicUrl,stars } = req.body;
+		if (!title || !area || !costperDay || !address || !state || !zip || !ownerEmail)
 			return res.status(400).send('Please provide all necessery fields');
 
-		const checkSpace = await pool.query(`SELECT * FROM Spaces WHERE OwnerEmail=$1;`, [ownerEmail]);
+		// const checkSpace = await pool.query(`SELECT * FROM Spaces WHERE OwnerEmail=$1;`, [ownerEmail]);
 
-		if (checkSpace.rowCount >= 1) return res.status(400).send('space already exist');
+		// if (checkSpace.rowCount >= 1) return res.status(400).send('space already exist');
 
-		const { rowCount } = pool.query(`INSERT INTO Spaces(
-					title, area, ownerEmail, ownerPhone, costperDay, maxPeople, description, address,city,state, zip,country,stars,availability)
-					VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9);`, [title, area, ownerEmail, ownerPhone, costperDay, maxPeople, description, address, city, state, zip, country, stars, "true"])
+		// pool
+		// .connect()
+		// .then(() => {
+			pool.query(`INSERT INTO Spaces(
+				title,area,ownerName, ownerEmail, costperDay, maxPeople, description, address,city,state, zip,country,is_available,imgUrl)
+				VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14);`, [title, area,ownerName, ownerEmail, costperDay, maxPeople, description, address,city,state, zip,country,"true",spacePicUrl])
+				.then(response => {
+					console.log(response);
+					return res.status(201).send('Success');
+				})
+				.catch((err) => {
+					console.log(err)
+				});
+		// })
+	
+	
+	// 	const { rowCount } = pool.query(`INSERT INTO Spaces(
+	// 				title, area, ownerEmail, ownerPhone, costperDay, maxPeople, description, address,city,state, zip,country,stars,availability)
+	// 				VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9);`, [title, area, ownerEmail, ownerPhone, costperDay, maxPeople, description, address, city, state, zip, country, stars, "true"])
           
 		
-					if (rowCount===0) return res.status(400).send("not updated !");
-					return res.status(200). send("200  Success !");
+	// 				if (rowCount===0) return res.status(400).send("not updated !");
+	// 				return res.status(200). send("200  Success !");
          
 
-	} catch (error) {
-		res.status(500).send(error.message);
-	}
+	// } catch (error) {
+	// 	res.status(500).send(error.message);
+	// }
+	
 };
 
 
@@ -89,6 +106,7 @@ const getSpaceId = async (req, res) => {
 		res.status(500).send(error.message);
 	}
 };
+
 
 
 
