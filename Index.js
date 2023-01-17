@@ -11,6 +11,7 @@ const userRoute = require('./routes/userRoutes');
 const spaceRoute = require('./routes/spaceRouters');
 const bookingRoute = require('./routes/bookingRouters');
 const sendMailRoute = require('./routes/sendMailRouter');
+const contactRoute = require('./routes/contactRoute');
 
 
 app.use(express.json());
@@ -27,6 +28,7 @@ app.use('/user', userRoute);
 app.use('/spaces', spaceRoute);
 app.use('/booking', bookingRoute);
 app.use('/send-email', sendMailRoute);
+app.use('/contact-us',contactRoute);
 
 
 

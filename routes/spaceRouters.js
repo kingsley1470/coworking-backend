@@ -5,7 +5,8 @@ const {
     createSpace,
     getAllSpaces,
     getSpaceById,
-    getSpaceByLocation
+    getSpaceByLocation,
+    getSpaceId
   } = require('../controllers/spaceContollers');
 
 
@@ -13,5 +14,7 @@ const {
   spaceRoute.route('/').get(getAllSpaces).post(createSpace);
   spaceRoute.route('/single-space').get(getSpaceById);
   spaceRoute.route('/location').post(getSpaceByLocation);
+  spaceRoute.route('/space-id').get(getSpaceId);
+
 
 module.exports = spaceRoute;
