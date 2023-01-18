@@ -8,18 +8,12 @@ const getAllSpaces = async (req, res) => {
 		console.log("pool connected");
 		const { rows } = await pool.query('SELECT * FROM Spaces;');
 		console.log(rows)
-		return res.status(200).send(rows);
-	// 	pool
-	// 		.connect()
-	// 		.then(() => {
-	// 			pool.query('SELECT * FROM Spaces;')
-	// 				.then(response => console.log(response.rows))
-	// 				.catch(err => console.log("error inside pool", err))
-	// 		})
+		 return res.status(200).send(rows);
 	} catch (error) {
 		console.log("ERRRRRR  -- ", error.message);
 	}
 	//return res.send(spaces);
+
 };
 
 
@@ -39,8 +33,8 @@ const createSpace = async (req, res) => {
 		// .connect()
 		// .then(() => {
 			pool.query(`INSERT INTO Spaces(
-				title,area,ownerName, ownerEmail, costperDay, maxPeople, description, address,city,state, zip,country,is_available,imgUrl)
-				VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14);`, [title, area,ownerName, ownerEmail, costperDay, maxPeople, description, address,city,state, zip,country,"true",spacePicUrl])
+				title,area,ownerName, ownerEmail, costperDay, maxPeople, description, address,city,state, zip,country,is_available,imgUrl,openhours_from,openhours_to,opendays_from,opendays_to)
+				VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18);`, [title, area,ownerName, ownerEmail, costperDay, maxPeople, description, address,city,state, zip,country,"true",spacePicUrl,"07","19","Monday "," Saturday"])
 				.then(response => {
 					console.log(response);
 					return res.status(201).send('Success');

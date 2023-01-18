@@ -48,7 +48,7 @@ const registerUser = async (req, res) => {
 						pool.query(`SELECT userid FROM Users WHERE email=$1;`, [email])
 							.then(response => {
 								const token = jwt.sign(Object.values(response.rows)[0].userid, process.env.JWT_SECRET);
-	                            return res.status(201).json({userid:(response.rows)[0].userid,token:token});
+	                            return res.status(201).json({userid:(response.rows)[0].userid,token:token,user:response.rows[0]});
 							}); //obj[Object.keys(obj)[0]]; 
 					})
 					.catch((err) => {
@@ -82,8 +82,9 @@ const loginUser = async (req, res) => {
 		//res.write(JSON.stringify(checkUser.rows));
 		//res.write((checkUser.rows).toString());
 		const jsonRes={
-			"userId":checkUser.rows[0].userid ,
-			"token":token
+			"user":checkUser.rows[0] ,
+			"token":token,
+			"userid":checkUser.rows[0].userid
 		}
 		 res.status(200).send(JSON.stringify(jsonRes));
 		// res.end();
@@ -107,6 +108,48 @@ const getOneUser = async (req, res) => {
 	}
 };
 
+const changePass = async(req,res)=>{
+	try {
+		console.log("new password",req.body)
+
+		const newPass =req.body.newPassword;
+		const userId=req.body.userId;
+
+		//const user = await pool.query(`SELECT * FROM Users WHERE email=$1;`, [userId]);
+		 // for checking entered pass is correct 
+		// const pwdMatch = await bcrypt.compare(password, Object.values(checkUser.rows)[0].password);
+
+		// if (!pwdMatch) return res.status(400).send('Incorrect password');
+
+	
+		const hash = await bcrypt.hash(newPass, 5);
+
+		const {rowCount} = await pool.query(`Update Users SET password=$1 WHERE userid=$2;`, [hash,userId]);
+		if(!rowCount) return res.status(500).send("failed !");
+		return res.status(200).send("Success");
+	
+	} catch (error) {
+		res.status(500).send(error.message);
+	}
+}
+
+const updateProfile = async(req,res)=>{
+	try {
+		console.log("inside update ",req.body)
+
+		const user =req.body.user;
+        const userId=req.body.userId;
+        const profilepicurl=req.body.profilepicurl;
+
+		const {rowCount} = await pool.query(`Update Users SET firstname=$1,lastname=$2,phonenumber=$3,address=$4,city=$5,country=$6,zip=$7,profilepicurl=$8 WHERE userid=$9;`, 
+		[user.firstname,user.lastname,user.phonenumber,user.address,user.city,user.country,user.zip,profilepicurl,userId]
+		);
+		if(!rowCount) return res.status(500).send("failed !")
+		 return res.status(200).send("Success");
+	} catch (error) {
+		res.status(500).send(error.message);
+	}
+}
 
 
-module.exports = { registerUser, loginUser, getOneUser,getAllUsers };
+module.exports = { registerUser, loginUser, getOneUser,getAllUsers,changePass,updateProfile };
