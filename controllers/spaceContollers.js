@@ -4,9 +4,11 @@ const spaces = require('../SpaceData.json');
 
 
 const getAllSpaces = async (req, res) => {
-	// try {
-	// 	console.log("pool connected");
-	// 	const { rows } = await pool.query('SELECT * FROM Spaces;');
+	try {
+		console.log("pool connected");
+		const { rows } = await pool.query('SELECT * FROM Spaces;');
+		console.log(rows)
+		return res.status(200).send(rows);
 	// 	pool
 	// 		.connect()
 	// 		.then(() => {
@@ -14,10 +16,10 @@ const getAllSpaces = async (req, res) => {
 	// 				.then(response => console.log(response.rows))
 	// 				.catch(err => console.log("error inside pool", err))
 	// 		})
-	// } catch (error) {
-	// 	console.log("ERRRRRR  -- ", error.message);
-	// }
-	return res.send(spaces);
+	} catch (error) {
+		console.log("ERRRRRR  -- ", error.message);
+	}
+	//return res.send(spaces);
 };
 
 
